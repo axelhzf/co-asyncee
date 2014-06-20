@@ -3,6 +3,7 @@
 EventEmitter using generators
 
 ```js
+var co = require("co");
 var Asyncee = require("co-asyncee");
 var eventEmitter = new Asyncee();
 
@@ -17,7 +18,7 @@ eventEmitter.once("event1", function* () {
 
 co(function *() {
     var result = yield eventEmitter.emit("event1");
-    //result = ["A", "B"];
+    // result = ["A", "B"];
 })();
 
 ```
