@@ -15,7 +15,11 @@ eventEmitter.once("event1", function* () {
     return "B";
 });
 
-var result = eventEmitter.emit("event1"); //result = ["A", "B"];
+co(function *() {
+    var result = yield eventEmitter.emit("event1");
+    //result = ["A", "B"];
+})();
+
 ```
 
 By defaults all listeners run in parallel. The execution can be limited by using `concurrency` option.
