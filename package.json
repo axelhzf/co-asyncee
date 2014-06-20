@@ -1,0 +1,14 @@
+{
+  "name": "co-asyncee",
+  "dependencies": {
+    "co": "^3.0.6",
+    "co-parallel": "^1.0.0"
+  },
+  "devDependencies": {
+    "chai": "^1.9.1",
+    "mocha": "^1.20.1"
+  },
+  "scripts": {
+    "test": "node --harmony node_modules/.bin/_mocha test.js --timeout 50000"
+  }
+}
