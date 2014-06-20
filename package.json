@@ -1,5 +1,8 @@
 {
   "name": "co-asyncee",
+  "version": "0.0.1",
+  "repository": "git://github.com/axelhzf/co-asyncee.git",
+  "description": "EventEmitter using generators",
   "dependencies": {
     "co": "^3.0.6",
     "co-parallel": "^1.0.0"
