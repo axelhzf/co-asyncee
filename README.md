@@ -4,24 +4,24 @@ EventEmitter using generators
 
 ```js
 var Asyncee = require("co-asyncee");
-var ee = new Asyncee();
+var eventEmitter = new Asyncee();
 
-ee.on("event1", function* () {
+eventEmitter.on("event1", function* () {
     yield someThunk();
     return "A";
 });
-ee.once("event1", function* () {
+eventEmitter.once("event1", function* () {
     yield someThunk();
     return "B";
 });
 
-var result = ee.emit("event1"); //result = ["A", "B"];
+var result = eventEmitter.emit("event1"); //result = ["A", "B"];
 ```
 
 By defaults all listeners run in parallel. The execution can be limited by using `concurrency` option.
 
 ```js
 var Asyncee = require("co-asyncee");
-var ee = new Asyncee();
-ee.concurrency = 1;
+var eventEmitter = new Asyncee();
+eventEmitter.concurrency = 1;
 ```
