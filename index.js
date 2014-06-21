@@ -51,7 +51,7 @@ Asyncee.prototype.emit = function (type) {
 
   return function (cb) {
     var listeners = self._events[type];
-    if (!listeners) return cb([]);
+    if (!listeners || listeners.length === 0) return cb(null, []);
 
     co(function* () {
       var fns = listeners.map(function (fn) {

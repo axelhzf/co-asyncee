@@ -1,6 +1,6 @@
 {
   "name": "co-asyncee",
-  "version": "0.0.2",
+  "version": "0.0.3",
   "repository": "git://github.com/axelhzf/co-asyncee.git",
   "description": "EventEmitter using generators",
   "dependencies": {
@@ -12,6 +12,6 @@
     "mocha": "^1.20.1"
   },
   "scripts": {
-    "test": "node --harmony node_modules/.bin/_mocha test.js --timeout 50000"
+    "test": "node --harmony node_modules/.bin/_mocha test.js --timeout 50000 --reporter spec"
   }
 }

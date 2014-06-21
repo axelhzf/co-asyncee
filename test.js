@@ -117,4 +117,11 @@ describe("Asyncee", function () {
     })(done);
   });
 
+  it("should return an empty array if theres is no listeners", function (done) {
+    co(function* () {
+      var result = yield ee.emit("event1");
+      expect(result).to.eql([]);
+    })(done);
+  });
+
 });
