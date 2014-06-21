@@ -1,15 +1,17 @@
 var parallel = require("co-parallel");
 var co = require("co");
 
+var slice = Array.prototype.slice;
+
 module.exports = Asyncee;
 
-function Asyncee(options) {
+function Asyncee (options) {
   options || (options = {});
   this._events = {};
   this.concurrency = options.concurrency;
 }
 
-function isGeneratorFunction(obj) {
+function isGeneratorFunction (obj) {
   return obj && obj.constructor !== null && obj.constructor.name === "GeneratorFunction";
 }
 
@@ -35,7 +37,7 @@ Asyncee.prototype.off = function (type, generator) {
   } else {
     var fns = this._events[type];
     var i = fns.indexOf(generator);
-    if (i < 0 ) {
+    if (i < 0) {
       return this;
     }
     fns.splice(i, 1);
@@ -45,13 +47,17 @@ Asyncee.prototype.off = function (type, generator) {
 
 Asyncee.prototype.emit = function (type) {
   var self = this;
+  var args = slice.call(arguments).slice(1);
+
   return function (cb) {
-    var fns = self._events[type];
-    if (!fns) {
-      return cb([]);
-    }
+    var listeners = self._events[type];
+    if (!listeners) return cb([]);
+
     co(function* () {
-      return yield parallel(fns, self.concurrency);
+      var fns = listeners.map(function (fn) {
+        return fn.apply(null, args);
+      });
+      return yield parallel(fns, this.concurrency);
     })(cb);
   }
 };
@@ -59,7 +65,7 @@ Asyncee.prototype.emit = function (type) {
 Asyncee.prototype.once = function (type, generator) {
   var self = this;
   var fn = function *() {
-    var result = yield generator();
+    var result = yield generator.apply(null, slice.call(arguments));
     self.off(type, fn);
     return result;
   };

@@ -8,7 +8,7 @@ describe("Asyncee", function () {
   var gen2;
   var gen3;
 
-  function wait(milis) {
+  function wait (milis) {
     milis = milis || 1;
     return function (cb) {
       setTimeout(function () {
@@ -20,12 +20,13 @@ describe("Asyncee", function () {
   beforeEach(function () {
     ee = new Asyncee();
 
-    gen1 = function* gen1() {
+    gen1 = function* gen1 (param) {
       yield wait(20);
-      return "A";
+      var result = param || "A";
+      return result;
     };
 
-    gen2 = function* gen2() {
+    gen2 = function* gen2 () {
       yield wait(10);
       return "B";
     };
@@ -97,6 +98,21 @@ describe("Asyncee", function () {
 
       var result = yield ee.emit("event1");
       expect(result).to.eql(["A"]);
+
+    })(done);
+  });
+
+  it("should pass emit parameters to listeners", function (done) {
+    co(function* () {
+      ee.on("event1", gen1)
+        .on("event1", gen2)
+        .once("event2", gen1);
+
+      var result = yield ee.emit("event1", "param1");
+      expect(result).to.eql(["param1", "B"]);
+
+      result = yield ee.emit("event2", "param2");
+      expect(result).to.eql(["param2"]);
 
     })(done);
   });
